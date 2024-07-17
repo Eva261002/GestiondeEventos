@@ -75,10 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['evento_id'])) {
         // Enviar notificación por correo electrónico
         $correo_usuario = $usuario['correo'];
         $asunto = "Registro en el evento: " . $evento['nombre'];
-        $cuerpo = "Te has registrado exitosamente en el evento " . $evento['nombre'] . 
-                  ".<br>Fecha: " . $evento['fecha'] . 
-                  "<br>Lugar: " . $evento['lugar'] .
-                  "<br>¡Esperamos verte allí!";
+        $cuerpo = "Ya es participante de este evento " . $evento['nombre'] . 
+              ".<br>Fecha: " . $evento['fecha'] . 
+              "<br>Lugar: " . $evento['lugar'] .
+              "<br>No faltes estamos ubicado en Av. Circunvalación, Ciudad Trinidad, Bolivia.";
 
         enviarCorreo($correo_usuario, $asunto, $cuerpo);
 
