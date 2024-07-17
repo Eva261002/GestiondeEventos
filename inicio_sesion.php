@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #FFEDD5; /* Color de fondo similar al fuego */
+            background-color: #f0f4f8; /* Color de fondo similar al fuego */
             font-family: 'Roboto', sans-serif;
         }
     </style>
