@@ -7,6 +7,11 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_rol'] != 'organizador'
 
 include 'config.php';
 
+// Consultar información del usuario logueado
+$stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
+$stmt->execute([$_SESSION['usuario_id']]);
+$usuario_actual = $stmt->fetch();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
@@ -43,8 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </ul>
         </nav>
     </header>
+    
     <main class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
         <h2 class="text-2xl font-bold mb-4 text-center">Crear Evento</h2>
+        
+        <div class="mb-4 text-center">
+            <p class="text-gray-700">Usuario: <span class="font-medium"><?php echo htmlspecialchars($usuario_actual['nombre']); ?></span></p>
+        </div>
+        
         <form method="POST" action="" class="space-y-4">
             <div>
                 <label for="nombre" class="block text-gray-700">Nombre del Evento:</label>
@@ -70,9 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label for="capacidad" class="block text-gray-700">Capacidad:</label>
                 <input type="number" id="capacidad" name="capacidad" required class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500" />
             </div>
-            <button type="submit" class="w-full p-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition duration-300">Crear Evento</button>
+            <button type="submit" class="w-full p-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-orange-700 transition duration-300 transform hover:scale-105">Crear Evento</button>
         </form>
     </main>
+    
     <footer class="mt-10 bg-white shadow">
         <p class="text-center py-4">&copy; 2024 Plataforma de Eventos. Todos los derechos reservados.</p>
     </footer>
