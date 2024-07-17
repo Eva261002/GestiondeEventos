@@ -84,6 +84,12 @@ $_SESSION['foto_perfil'] = $usuario['foto_perfil'];
         <h2 class="text-2xl font-semibold mb-4 text-center">Perfil</h2>
         <div class="max-w-lg mx-auto bg-white p-6 rounded shadow">
             <form method="POST" action="perfil.php" enctype="multipart/form-data">
+                <div class="mt-4 text-center">
+                    <h3 class="text-lg font-semibold mb-2">Foto de Perfil:</h3>
+                    <div class="w-32 h-32 mx-auto">
+                        <img id="foto_perfil_preview" src="<?php echo isset($_SESSION['foto_perfil']) ? htmlspecialchars($_SESSION['foto_perfil']) : ''; ?>" alt="Foto de Perfil" class="rounded-full object-cover w-full h-full">
+                    </div>
+                </div>
                 <label for="nombre" class="block text-left text-gray-700">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required class="border border-gray-300 rounded w-full py-2 px-3 mb-4">
 
@@ -95,12 +101,7 @@ $_SESSION['foto_perfil'] = $usuario['foto_perfil'];
 
                 <button type="submit" class="bg-blue-500 text-white hover:bg-blue-600 transition duration-300 px-4 py-2 rounded">Guardar Cambios</button>
             </form>
-            <div class="mt-4 text-center">
-                <h3 class="text-lg font-semibold mb-2">Foto de Perfil:</h3>
-                <div class="w-32 h-32 mx-auto">
-                    <img id="foto_perfil_preview" src="<?php echo isset($_SESSION['foto_perfil']) ? htmlspecialchars($_SESSION['foto_perfil']) : ''; ?>" alt="Foto de Perfil" class="rounded-full object-cover w-full h-full">
-                </div>
-            </div>
+            
         </div>
     </main>
     <footer class="bg-gray-800 p-4 text-center text-white mt-8">
