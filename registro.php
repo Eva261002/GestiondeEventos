@@ -17,13 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         $foto_perfil = $uploads_dir . '/' . basename($_FILES['foto_perfil']['name']);
         
-        // Validar el tipo de archivo
+        // para validar tipo de archivo para la pagina
         $tipo_archivo = pathinfo($foto_perfil, PATHINFO_EXTENSION);
         $tipos_permitidos = ['jpg', 'jpeg', 'png', 'gif'];
         
         if (in_array(strtolower($tipo_archivo), $tipos_permitidos)) {
             if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil)) {
-                // Archivo subido correctamente
+                
             } else {
                 echo "<script>alert('Error al mover el archivo subido.');</script>";
                 exit();
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </main>
     <footer class="py-4 bg-gray-800 rounded shadow-md mt-10">
-        <p class="text-center text-white">&copy; 2024 Plataforma de Eventos. Todos los derechos reservados.</p>
+        <p class="text-center text-white">&copy; Plataforma de Eventos "Carola". Todos los derechos reservados.</p>
     </footer>
 </body>g
 </html>

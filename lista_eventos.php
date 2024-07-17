@@ -12,7 +12,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $usuario_id = $_SESSION['usuario_id'];
 
-// Consultar información del usuario logueado
+// info de usuario registrado
 $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
 $stmt->execute([$usuario_id]);
 $usuario_actual = $stmt->fetch();
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['evento_id'])) {
         $stmt->execute([$usuario_id]);
         $usuario = $stmt->fetch();
 
-        // Enviar notificación por correo electrónico usando PHPMailer
+        // Enviar notificación por correo electrónico
         $correo_usuario = $usuario['correo'];
         $asunto = "Registro en el evento: " . $evento['nombre'];
         $cuerpo = "Te has registrado exitosamente en el evento " . $evento['nombre'] . 
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['evento_id'])) {
                   "<br>Lugar: " . $evento['lugar'] .
                   "<br>¡Esperamos verte allí!";
 
-        enviarCorreo($correo_usuario, $asunto, $cuerpo); // Llamar a la función para enviar el correo
+        enviarCorreo($correo_usuario, $asunto, $cuerpo);
 
         header('Location: lista_eventos.php');
         exit();
@@ -93,16 +93,15 @@ function enviarCorreo($destinatario, $asunto, $cuerpo) {
     $mail = new PHPMailer(true);
 
     try {
-        // Configuración del servidor SMTP
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'suarezmuchairo@gmail.com';
-        $mail->Password = 'xsxuemxevdpymcgw'; // Aquí va la contraseña de aplicación
+        $mail->Password = 'xsxuemxevdpymcgw';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        // Configuración del correo
+        // config del correo
         $mail->setFrom('suarezmuchairo@gmail.com', 'Salon de Eventos Carola');
         $mail->addAddress($destinatario);
         $mail->Subject = $asunto;

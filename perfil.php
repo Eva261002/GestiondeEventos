@@ -12,7 +12,7 @@ $usuario_id = $_SESSION['usuario_id'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
 
-    // Actualizar la contraseña si se proporciona
+    // Actualizar la contraseña si llena el campo 
     if (!empty($_POST['password'])) {
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $stmt = $pdo->prepare("UPDATE usuarios SET nombre = ?, contrasena = ? WHERE id = ?");
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$nombre, $usuario_id]);
     }
 
-    // Manejo de la foto de perfil
+    // foto de perfil
     if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] == UPLOAD_ERR_OK) {
         $upload_dir = 'uploads/';
         $file_extension = strtolower(pathinfo($_FILES['foto_perfil']['name'], PATHINFO_EXTENSION));
@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 
-// Obtener datos del usuario
 $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
 $stmt->execute([$usuario_id]);
 $usuario = $stmt->fetch();
@@ -105,7 +104,7 @@ $_SESSION['foto_perfil'] = $usuario['foto_perfil'];
         </div>
     </main>
     <footer class="bg-gray-800 p-4 text-center text-white mt-8">
-        <p>&copy; 2024 Plataforma de Eventos. Todos los derechos reservados.</p>
+        <p>&copy; Plataforma de Eventos "Carola". Todos los derechos reservados.</p>
     </footer>
 </body>
 </html>

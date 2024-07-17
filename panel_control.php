@@ -10,7 +10,7 @@ include 'config.php';
 $usuario_id = $_SESSION['usuario_id'];
 $usuario_rol = $_SESSION['usuario_rol'];
 
-// Consultar información del usuario logueado
+// info de usuario registrado
 $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
 $stmt->execute([$usuario_id]);
 $usuario_actual = $stmt->fetch();
@@ -59,7 +59,7 @@ $usuario_actual = $stmt->fetch();
         </div>
     </main>
     <footer class="bg-gray-800 p-4 text-center text-white mt-8">
-        <p>&copy; 2024 Plataforma de Eventos. Todos los derechos reservados.</p>
+        <p>&copy; Plataforma de Eventos "Carola". Todos los derechos reservados.</p>
     </footer>
 </body>
 </html>

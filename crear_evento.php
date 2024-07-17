@@ -7,7 +7,6 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_rol'] != 'organizador'
 
 include 'config.php';
 
-// Consultar información del usuario logueado
 $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
 $stmt->execute([$_SESSION['usuario_id']]);
 $usuario_actual = $stmt->fetch();
@@ -86,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </main>
     
     <footer class="mt-10 bg-white shadow">
-        <p class="text-center py-4">&copy; 2024 Plataforma de Eventos. Todos los derechos reservados.</p>
+        <p class="text-center py-4">&copy; Plataforma de Eventos. Todos los derechos reservados.</p>
     </footer>
 </body>
 </html>

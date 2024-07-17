@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'config.php';
-require 'composer/index.php'; // Asegúrate de que la ruta sea correcta
+require 'composer/index.php';
 require 'composer/vendor/autoload.php';
 
 
@@ -14,7 +14,6 @@ $evento_id = $_GET['id'];
 $usuario_id = $_SESSION['usuario_id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Registrar al usuario en el evento
     $stmt = $pdo->prepare("INSERT INTO registro_eventos (id_usuario, id_evento) VALUES (?, ?)");
     $stmt->execute([$usuario_id, $evento_id]);
 
@@ -36,8 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               "<br>Lugar: " . $evento['lugar'] .
               "<br>¡Esperamos verte allí!";
 
-    $resultado = enviarCorreo($correo_usuario, $asunto, $cuerpo); // Llamar a la función para enviar el correo
-    echo $resultado;
+    $resultado = enviarCorreo($correo_usuario, $asunto, $cuerpo); 
 
     header('Location: lista_eventos.php');
     exit();
@@ -77,7 +75,7 @@ $evento = $stmt->fetch();
         </form>
     </main>
     <footer>
-        <p>&copy; 2024 Plataforma de Eventos. Todos los derechos reservados.</p>
+        <p>&copy; Plataforma de Eventos "Carola". Todos los derechos reservados.</p>
     </footer>
 </body>
 </html>

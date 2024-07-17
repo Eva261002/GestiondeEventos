@@ -21,7 +21,7 @@ $isLoggedIn = isset($_SESSION['usuario_id']);
             background-attachment: fixed;
         }
         header {
-            background-color: rgba(31, 41, 55, 0.85); /* Fondo con transparencia */
+            background-color: rgba(31, 41, 55, 0.85);
         }
         .nav-link {
             transition: background-color 0.3s, transform 0.3s;
@@ -53,7 +53,6 @@ $isLoggedIn = isset($_SESSION['usuario_id']);
         <h1 class="text-4xl font-bold text-gray-800 mb-4 transition transform hover:scale-105">Bienvenido a la Plataforma de Salon De Eventos "Carola"</h1>
         <p class="text-lg text-gray-700 mb-6">Explora eventos interesantes y únete a la comunidad.</p>
         
-        <!-- Espacio para una imagen -->
         <div class="mb-6">
             <img src="img/Eventcaro.jpg" alt="Bienvenida" class="w-full h-64 object-cover rounded shadow-lg">
         </div>
@@ -92,7 +91,7 @@ $isLoggedIn = isset($_SESSION['usuario_id']);
         </div>
     </main>
     <footer class="py-4 bg-gray-800 rounded shadow-md mt-10">
-        <p class="text-center text-white">&copy; 2024 Plataforma de Eventos "Carola". Todos los derechos reservados.</p>
+        <p class="text-center text-white">&copy; Plataforma de Eventos "Carola". Todos los derechos reservados.</p>
     </footer>
 </body>
 </html>

@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </main>
     <footer class="py-4 bg-gray-800 rounded shadow-md mt-10">
-        <p class="text-center text-white">&copy; 2024 Plataforma de Eventos. Todos los derechos reservados.</p>
+        <p class="text-center text-white">&copy; Plataforma de Eventos. Todos los derechos reservados.</p>
     </footer>
 </body>
 </html>
