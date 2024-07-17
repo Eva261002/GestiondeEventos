@@ -13,11 +13,11 @@ function enviarCorreo($asunto, $cuerpo, $destinatario) {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'suarezmuchairo@gmail.com';
-        $mail->Password = 'cycwywcgvygbnbvg'; // Usa la contraseña de aplicación
+        $mail->Password = 'xsxuemxevdpymcgw';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('suarezmuchairo@gmail.com', 'Soy Felipe');
+        $mail->setFrom('suarezmuchairo@gmail.com', 'Salon de Evento Carola');
         $mail->addAddress($destinatario);
         $mail->Subject = $asunto;
         $mail->Body = $cuerpo;

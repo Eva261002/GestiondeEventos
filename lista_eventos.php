@@ -52,8 +52,8 @@ if (isset($_GET['id'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['evento_id'])) {
     $evento_id = $_POST['evento_id'];
     
-    // Consultar capacidad del evento
-    $stmt = $pdo->prepare("SELECT capacidad FROM eventos WHERE id = ?");
+    // Consultar capacidad del evento y otros detalles
+    $stmt = $pdo->prepare("SELECT * FROM eventos WHERE id = ?");
     $stmt->execute([$evento_id]);
     $evento = $stmt->fetch();
 
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['evento_id'])) {
                   ".<br>Fecha: " . $evento['fecha'] . 
                   "<br>Lugar: " . $evento['lugar'] .
                   "<br>¡Esperamos verte allí!";
-        
+
         enviarCorreo($correo_usuario, $asunto, $cuerpo); // Llamar a la función para enviar el correo
 
         header('Location: lista_eventos.php');
@@ -98,16 +98,16 @@ function enviarCorreo($destinatario, $asunto, $cuerpo) {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'suarezmuchairo@gmail.com';
-        $mail->Password = 'cycwywcgvygbnbvg'; // Aquí va la contraseña de aplicación
+        $mail->Password = 'xsxuemxevdpymcgw'; // Aquí va la contraseña de aplicación
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Configuración del correo
-        $mail->setFrom('suarezmuchairo@gmail.com', 'Soy Felipe');
+        $mail->setFrom('suarezmuchairo@gmail.com', 'Salon de Eventos Carola');
         $mail->addAddress($destinatario);
         $mail->Subject = $asunto;
         $mail->Body = $cuerpo;
-        $mail->isHTML(true); // Permitir HTML en el cuerpo del correo
+        $mail->isHTML(true);
 
         $mail->send();
         return 'Correo enviado correctamente';
@@ -170,15 +170,15 @@ function enviarCorreo($destinatario, $asunto, $cuerpo) {
         </div>
 
         <?php if ($evento_detalle): ?>
-            <h2 class="text-2xl font-semibold mt-8 mb-4">Detalles del Evento</h2>
+            <h2 class="text-2xl font-semibold mt-8 mb-4">Detalles del Evento: <?php echo htmlspecialchars($evento_detalle['nombre']); ?></h2>
             <div class="bg-white p-4 rounded shadow">
                 <h3 class="text-xl font-bold mb-2"><?php echo htmlspecialchars($evento_detalle['nombre']); ?></h3>
                 <p class="mb-2"><?php echo htmlspecialchars($evento_detalle['descripcion']); ?></p>
                 <p class="mb-2"><?php echo htmlspecialchars($evento_detalle['fecha']); ?> a las <?php echo htmlspecialchars($evento_detalle['hora']); ?></p>
                 <p class="mb-2">En <?php echo htmlspecialchars($evento_detalle['lugar']); ?></p>
                 <p class="mb-4">Capacidad: <?php echo htmlspecialchars($evento_detalle['capacidad']); ?></p>
-                <h4 class="text-lg font-semibold mb-2">Usuarios Registrados:</h4>
-                <ul>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Usuarios Registrados:</h4>
+                <ul class="list-disc list-inside">
                     <?php foreach ($usuarios_evento as $usuario): ?>
                         <li><?php echo htmlspecialchars($usuario['nombre']); ?> (<?php echo htmlspecialchars($usuario['correo']); ?>)</li>
                     <?php endforeach; ?>
@@ -186,8 +186,5 @@ function enviarCorreo($destinatario, $asunto, $cuerpo) {
             </div>
         <?php endif; ?>
     </main>
-    <footer class="bg-gray-800 p-4 text-center text-white mt-8">
-        <p>&copy; 2024 Event Manager. Todos los derechos reservados.</p>
-    </footer>
 </body>
 </html>

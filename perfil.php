@@ -24,10 +24,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Manejo de la foto de perfil
     if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] == UPLOAD_ERR_OK) {
-        $foto_perfil = 'uploads/' . basename($_FILES['foto_perfil']['name']);
-        if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil)) {
-            $stmt = $pdo->prepare("UPDATE usuarios SET foto_perfil = ? WHERE id = ?");
-            $stmt->execute([$foto_perfil, $usuario_id]);
+        $upload_dir = 'uploads/';
+        $file_extension = strtolower(pathinfo($_FILES['foto_perfil']['name'], PATHINFO_EXTENSION));
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (in_array($file_extension, $allowed_types)) {
+            $new_filename = uniqid() . '.' . $file_extension;
+            $foto_perfil = $upload_dir . $new_filename;
+            
+            if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil)) {
+                $stmt = $pdo->prepare("UPDATE usuarios SET foto_perfil = ? WHERE id = ?");
+                $stmt->execute([$foto_perfil, $usuario_id]);
+                $_SESSION['foto_perfil'] = $foto_perfil;
+            }
         }
     }
 
@@ -39,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
 $stmt->execute([$usuario_id]);
 $usuario = $stmt->fetch();
+$_SESSION['foto_perfil'] = $usuario['foto_perfil'];
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +59,16 @@ $usuario = $stmt->fetch();
     <title>Perfil</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/estilo.css">
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.getElementById('foto_perfil_preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </head>
 <body class="bg-gray-100">
     <header class="bg-gray-800 p-4 text-white">
@@ -71,20 +91,16 @@ $usuario = $stmt->fetch();
                 <input type="password" id="password" name="password" class="border border-gray-300 rounded w-full py-2 px-3 mb-4">
 
                 <label for="foto_perfil" class="block text-left text-gray-700">Foto de Perfil:</label>
-                <input type="file" id="foto_perfil" name="foto_perfil" accept=".jpg, .jpeg, .png, .gif" class="border border-gray-300 rounded w-full py-2 px-3 mb-4">
+                <input type="file" id="foto_perfil" name="foto_perfil" accept=".jpg, .jpeg, .png, .gif" class="border border-gray-300 rounded w-full py-2 px-3 mb-4" onchange="previewImage(event)">
 
                 <button type="submit" class="bg-blue-500 text-white hover:bg-blue-600 transition duration-300 px-4 py-2 rounded">Guardar Cambios</button>
             </form>
-            <?php if ($usuario['foto_perfil']): ?>
-                <div class="mt-4 text-center">
-                    <h3 class="text-lg font-semibold mb-2">Foto de Perfil:</h3>
-                    <img src="<?php echo htmlspecialchars($usuario['foto_perfil']); ?>" alt="Foto de Perfil" class="rounded-full w-32 h-32 mx-auto">
+            <div class="mt-4 text-center">
+                <h3 class="text-lg font-semibold mb-2">Foto de Perfil:</h3>
+                <div class="w-32 h-32 mx-auto">
+                    <img id="foto_perfil_preview" src="<?php echo isset($_SESSION['foto_perfil']) ? htmlspecialchars($_SESSION['foto_perfil']) : ''; ?>" alt="Foto de Perfil" class="rounded-full object-cover w-full h-full">
                 </div>
-            <?php else: ?>
-                <div class="mt-4 text-center">
-                    <h3 class="text-lg font-semibold mb-2">No tienes foto de perfil.</h3>
-                </div>
-            <?php endif; ?>
+            </div>
         </div>
     </main>
     <footer class="bg-gray-800 p-4 text-center text-white mt-8">

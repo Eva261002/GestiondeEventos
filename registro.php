@@ -3,10 +3,10 @@ session_start();
 include 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nombre = $_POST['nombre'];
-    $correo = $_POST['correo'];
+    $nombre = htmlspecialchars($_POST['nombre'], ENT_QUOTES, 'UTF-8');
+    $correo = filter_var($_POST['correo'], FILTER_SANITIZE_EMAIL);
     $contrasena = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $rol = $_POST['rol'];
+    $rol = htmlspecialchars($_POST['rol'], ENT_QUOTES, 'UTF-8');
     
     $foto_perfil = null;
     if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] == UPLOAD_ERR_OK) {
@@ -16,8 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tipo_archivo = pathinfo($foto_perfil, PATHINFO_EXTENSION);
         $tipos_permitidos = ['jpg', 'jpeg', 'png', 'gif'];
         
-        if (in_array($tipo_archivo, $tipos_permitidos)) {
-            move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil);
+        if (in_array(strtolower($tipo_archivo), $tipos_permitidos)) {
+            if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil)) {
+                // Archivo subido correctamente
+            } else {
+                echo "<script>alert('Error al subir el archivo.');</script>";
+                exit();
+            }
         } else {
             echo "<script>alert('Formato de imagen no permitido. Solo se permiten JPG, PNG y GIF.');</script>";
             exit();
@@ -78,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="foto_perfil" class="block text-left text-gray-700">Foto de Perfil:</label>
             <input type="file" id="foto_perfil" name="foto_perfil" accept=".jpg, .jpeg, .png, .gif" class="border border-gray-300 rounded w-full py-2 px-3 mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500">
             
-            <button type="submit" class="bg-orange-600 text-white hover:bg-orange-700 transition duration-300 px-4 py-2 rounded shadow-lg">Registrarse</button>
+            <button type="submit" class="bg-blue-600 text-white hover:bg-orange-700 transition duration-300 px-4 py-2 rounded shadow-lg">Registrarse</button>
         </form>
     </main>
     <footer class="py-4 bg-gray-800 rounded shadow-md mt-10">
