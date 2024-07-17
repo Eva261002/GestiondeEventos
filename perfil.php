@@ -12,6 +12,7 @@ $usuario_id = $_SESSION['usuario_id'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
 
+    // Actualizar la contraseña si se proporciona
     if (!empty($_POST['password'])) {
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $stmt = $pdo->prepare("UPDATE usuarios SET nombre = ?, contrasena = ? WHERE id = ?");
@@ -21,11 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$nombre, $usuario_id]);
     }
 
+    // Manejo de la foto de perfil
     if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] == UPLOAD_ERR_OK) {
         $foto_perfil = 'uploads/' . basename($_FILES['foto_perfil']['name']);
-        move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil);
-        $stmt = $pdo->prepare("UPDATE usuarios SET foto_perfil = ? WHERE id = ?");
-        $stmt->execute([$foto_perfil, $usuario_id]);
+        if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil)) {
+            $stmt = $pdo->prepare("UPDATE usuarios SET foto_perfil = ? WHERE id = ?");
+            $stmt->execute([$foto_perfil, $usuario_id]);
+        }
     }
 
     header('Location: perfil.php');
@@ -68,13 +71,18 @@ $usuario = $stmt->fetch();
                 <input type="password" id="password" name="password" class="border border-gray-300 rounded w-full py-2 px-3 mb-4">
 
                 <label for="foto_perfil" class="block text-left text-gray-700">Foto de Perfil:</label>
-                <input type="file" id="foto_perfil" name="foto_perfil" class="border border-gray-300 rounded w-full py-2 px-3 mb-4">
+                <input type="file" id="foto_perfil" name="foto_perfil" accept=".jpg, .jpeg, .png, .gif" class="border border-gray-300 rounded w-full py-2 px-3 mb-4">
 
                 <button type="submit" class="bg-blue-500 text-white hover:bg-blue-600 transition duration-300 px-4 py-2 rounded">Guardar Cambios</button>
             </form>
             <?php if ($usuario['foto_perfil']): ?>
-                <div class="mt-4">
-                    <img src="<?php echo htmlspecialchars($usuario['foto_perfil']); ?>" alt="Foto de Perfil" class="rounded w-24 h-24">
+                <div class="mt-4 text-center">
+                    <h3 class="text-lg font-semibold mb-2">Foto de Perfil:</h3>
+                    <img src="<?php echo htmlspecialchars($usuario['foto_perfil']); ?>" alt="Foto de Perfil" class="rounded-full w-32 h-32 mx-auto">
+                </div>
+            <?php else: ?>
+                <div class="mt-4 text-center">
+                    <h3 class="text-lg font-semibold mb-2">No tienes foto de perfil.</h3>
                 </div>
             <?php endif; ?>
         </div>
