@@ -11,7 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $foto_perfil = null;
     if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] == UPLOAD_ERR_OK) {
         $foto_perfil = 'uploads/' . basename($_FILES['foto_perfil']['name']);
-        move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil);
+        
+        // Validar el tipo de archivo
+        $tipo_archivo = pathinfo($foto_perfil, PATHINFO_EXTENSION);
+        $tipos_permitidos = ['jpg', 'jpeg', 'png', 'gif'];
+        
+        if (in_array($tipo_archivo, $tipos_permitidos)) {
+            move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $foto_perfil);
+        } else {
+            echo "<script>alert('Formato de imagen no permitido. Solo se permiten JPG, PNG y GIF.');</script>";
+            exit();
+        }
     }
 
     $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, correo, contrasena, foto_perfil, rol) VALUES (?, ?, ?, ?, ?)");
@@ -32,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #FFEDD5; /* Color de fondo similar al fuego */
+            background-color: #FFEDD5;
             font-family: 'Roboto', sans-serif;
         }
     </style>
@@ -66,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </select>
             
             <label for="foto_perfil" class="block text-left text-gray-700">Foto de Perfil:</label>
-            <input type="file" id="foto_perfil" name="foto_perfil" class="border border-gray-300 rounded w-full py-2 px-3 mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <input type="file" id="foto_perfil" name="foto_perfil" accept=".jpg, .jpeg, .png, .gif" class="border border-gray-300 rounded w-full py-2 px-3 mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500">
             
             <button type="submit" class="bg-orange-600 text-white hover:bg-orange-700 transition duration-300 px-4 py-2 rounded shadow-lg">Registrarse</button>
         </form>
